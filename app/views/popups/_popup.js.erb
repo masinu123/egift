@@ -1,0 +1,19 @@
+if($('#popup').length == 0) {
+  $('body').prepend("<%= j render 'popups/template' %>")
+}
+
+$('#popup .modal-body').html("<%= j render render_path, locals %>");
+$('#popup .modal-title').html("<%= j title %>")
+$('#popup').modal('show');
+// $('#popup').attr('class', "fill-in modal <%= 'popups-' + (render_path.gsub! '/', '-').to_s %>")
+App.select2('#popup');
+// App.inputMask('#popup');
+App.datetimePicker('#popup');
+// MagicField
+$('.magicField', '#popup').each(function(){
+  ToggleFieldBySelection.init({
+    selection:  $(this),
+    wrapper:    $(this).data('mfwrapper'),
+    field:      $(this).data('mfsegment')
+  });
+});

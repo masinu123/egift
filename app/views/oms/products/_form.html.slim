@@ -1,0 +1,54 @@
+.row
+  .col-sm-6
+    = f.input :name
+  .col-sm-3
+    = f.input :brand_id, as: :select2_ajax, url: selection_oms_brands_path, collection: CollectionSerializer.new(::Brand.where(id: f.object.brand_id), SelectionSerializer::Base).to_a(to_hash: false), label_method: :text, required: true
+.row  
+  .col-sm-6
+    .card.card-default
+      .card-header.separator
+        .card-title Additional Data
+      .card-block id='metadata'
+        - f.object.meta ||= {}
+        = f.fields_for :meta, OpenStruct.new(f.object.meta) do |ff|
+          - f.object.meta.each do |k, v|
+            = ff.input k.to_sym, required: false, placeholder: 'Empty value will be remove this key', type: 'text'
+      .row style='padding: 15px;'
+        .col-sm-5
+          input.new_key_name.form-control.optional placeholder='Enter key name'
+        .col-sm-2
+          text.add_new_key.btn.btn-info Add new field
+  .col-sm-6
+    .card.card-default
+      .card-header.separator
+        .card-title Prices
+      .card-block
+        .row
+          .col-sm-12
+            #fields
+              = f.fields_for :prices, f.object.prices.sort_by(&:id) do |ff|
+                .row
+                  .col-sm-3
+                    = ff.input :currency, collection: currencies, as: :select2, prompt: true
+                  .col-sm-6
+                    = ff.input :value
+                  .col-sm-3
+                    = ff.link_to_remove t('.destroy', default: t('helpers.links.destroy')).html_safe, class: 'btn btn-danger float-right', tabindex: -1
+        .row
+          .col-sm-6
+            = f.link_to_add 'Add new Price', :prices, class: 'btn btn-success btn-block m-t-15', data: { target: '#fields' }
+
+= content_for :javascript_inline do
+  javascript:
+    $(document).ready(function() {
+      $('.add_new_key').click(function(){
+        var list = document.getElementById('metadata');
+        var key_input = document.querySelector('.new_key_name'); 
+        var key_name = key_input.value;
+
+        if (key_name) {
+          key_input.value = '';
+          list.innerHTML += '<div class="form-group string optional resource_meta_'+key_name+'"><label class="control-label string optional" for="resource_meta_'+key_name+'">'+key_name+'</label><input class="form-control string optional" placeholder="Empty value will be remove this key" type="text" name="resource[meta]['+key_name+']" id="resource_meta_'+key_name+'"></div>'
+        }
+      });
+    });

@@ -1,0 +1,7 @@
+- model_class = User
+- content_for :title do
+  = t '.title', default: t("helpers.titles.#{action_name}", model: model_class.model_name.human, default: 'OMS')
+
+.card
+  .card-block
+    = render partial: 'form'

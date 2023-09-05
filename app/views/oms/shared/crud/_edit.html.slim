@@ -1,0 +1,50 @@
+- unless defined?(url)
+  - url = nil
+
+- unless defined?(method)
+  - method = nil
+
+- unless defined?(can_create)
+  - can_create = true
+
+- unless defined?(reload)
+  - reload = false
+
+- if breadcrumbs.blank?
+  - breadcrumb "edit_#{klass_name}".to_sym, resource
+- content_for :title do
+  = t '.title', default: t("helpers.titles.#{action_name}", model: klass.model_name.human, default: 'OMS')
+/ - if can_create && can?(:create, klass_constantize)
+- content_for :page_buttons do
+  = link_to t('.new', default: t('helpers.links.new')).html_safe, new_resource_path, class: 'btn btn-primary', title: t('helpers.titles.new', model: klass.model_name.human)
+
+- unless defined?(card_transparent)
+  - card_transparent = false
+
+br/
+.card class="#{card_transparent ? 'card-transparent' : ''}"
+  .card-block style="#{card_transparent ? 'padding: 0;' : ''}"
+    = simple_nested_form_for [:oms, resource], as: :resource, url: url, remote: request.format.js?, html: { class: 'form-horizontal' } do |f|
+      input name="reload" type="hidden" value="#{reload}"
+      = yield f
+
+      .pull-right
+        .input-group
+          - if content_for?(:custom_actions)
+            = yield :custom_actions
+            | &nbsp;
+
+          - if content_for?(:submit)
+            = yield :submit
+          - else
+            = f.button :submit, t('helpers.buttons.submit'), class: 'btn btn-primary'
+            | &nbsp;
+          
+          - if request.format.js?
+            = link_to t('.cancel', default: t('helpers.links.cancel')), collection_path, class: 'btn btn-default', "aria-label" => "Close", "data-dismiss" => "modal"
+          - else
+            = link_to t('.cancel', default: t('helpers.links.cancel')), collection_path, class: 'btn btn-default'
+      .clearfix
+
+- if content_for?(:show_body)
+  = yield :show_body

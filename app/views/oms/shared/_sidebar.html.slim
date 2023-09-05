@@ -1,0 +1,19 @@
+nav.page-sidebar data-pages="sidebar"
+  /! BEGIN SIDEBAR MENU HEADER
+  .sidebar-header
+    strong E-GIFT
+    .sidebar-header-controls
+      button.btn.btn-link.hidden-md-down data-toggle-pin="sidebar" type="button"
+        i.fa.fs-12
+  /! END SIDEBAR MENU HEADER
+  /! START SIDEBAR MENU
+
+  .sidebar-menu
+    /! BEGIN SIDEBAR MENU ITEMS
+    ul.menu-items
+      li.m-t-30
+      = render 'oms/shared/menu/user'
+      = render 'oms/shared/menu/brand'
+      = render 'oms/shared/menu/product'
+      = render 'oms/shared/menu/card'
+    .clearfix

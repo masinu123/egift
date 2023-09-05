@@ -1,0 +1,21 @@
+- model_class = ::Brand
+
+= render 'oms/shared/crud/index', collection: @collection do
+  .table-responsive
+    table.table.table-hover.no-footer
+      thead
+        tr
+          th= klass.human_attribute_name(:name)
+          th= klass.human_attribute_name(:state)
+          th.text-right Actions
+      tbody
+        - @collection.each do |resource|
+          tr
+            td= resource.name
+            td= resource.state
+            td.text-right
+              - if can?(:update, resource)
+                - if resource.active?
+                  = link_to t('.edit', default: t('helpers.links.edit')).html_safe, edit_oms_brand_path(resource), class: 'btn btn-success btn-xs'
+                  '
+                  = link_to t('.deactivate', default: 'Deactivate'), deactivate_oms_brand_path(resource), class: 'btn btn-info btn-xs', data:  { confirm: t('.confirm', default:  t('helpers.links.confirm', default: 'Are you sure? This action also deactivate all product link with this brand and CAN NOT REVERSE')) }

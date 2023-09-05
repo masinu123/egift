@@ -1,0 +1,21 @@
+- unless defined?(can_create)
+  - can_create = true
+
+- if breadcrumbs.blank?
+  - breadcrumb klass_plural_name.to_sym
+
+- content_for :title do
+  = t '.title', default: t("helpers.titles.#{action_name}", model: klass.model_name.human, default: 'OMS')
+
+- if can_create && can?(:create, klass_constantize)
+  - content_for :page_buttons do
+    = link_to t('.new', default: t('helpers.links.new')).html_safe, new_resource_path, class: 'btn btn-primary', title: t('helpers.titles.new', model: klass.model_name.human)
+
+br/
+.card
+  .card-block
+    .dataTables_wrapper
+      / = render 'oms/shared/paging', collection: collection
+      = yield
+      br/
+      / = render 'oms/shared/paging', collection: collection

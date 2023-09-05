@@ -1,0 +1,6 @@
+- if can?(:read, ::User)
+  li class="#{active_menu(controller_name: 'oms/users')}"
+    a href=oms_users_path
+      span.title #{::User.model_name.human(count: 2)}
+    span.icon-thumbnail
+      i.fa.fa-cubes

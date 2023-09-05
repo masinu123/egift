@@ -1,0 +1,34 @@
+= simple_nested_form_for [:oms, @resource], as: :resource, html: { class: 'form-horizontal' } do |f|
+  .row
+    .col-sm-4
+      = f.input :email, disabled: true
+    .col-sm-2
+      - disabled = !@resource.client?
+      = f.input :payout_rate, disabled: disabled, placeholder: 'Within 0 and 1'
+    .col-sm-3
+      = f.association :roles, as: :check_boxes, multiple: true
+    .col-sm-3
+      - selected_product_names = ::Product.select(:name).where(id: f.object.product_ids).pluck(:name)
+      = f.input :products, as: :select2_ajax, url: selection_oms_products_path, multiple: true, products: true, collection: selected_product_names, selected: selected_product_names, separators: [',']
+
+  .pull-right
+    .input-group
+      = f.button :submit, t('helpers.buttons.submit'), class: 'btn btn-primary'
+      | &nbsp;
+      = link_to t('.cancel', default: t('helpers.links.cancel')), oms_users_path, class: 'btn btn-default'
+  .clearfix
+
+= content_for :javascript_inline do
+  javascript:
+    $(document).ready(function() {
+      $('.add_new_key').click(function(){
+        var list = document.getElementById('metadata');
+        var key_input = document.querySelector('.new_key_name'); 
+        var key_name = key_input.value;
+
+        if (key_name) {
+          key_input.value = '';
+          list.innerHTML += '<div class="form-group string optional resource_meta_'+key_name+'"><label class="control-label string optional" for="resource_meta_'+key_name+'">'+key_name+'</label><input class="form-control string optional" placeholder="Empty value will be remove this key" type="text" name="resource[meta]['+key_name+']" id="resource_meta_'+key_name+'"></div>'
+        }
+      });
+    });

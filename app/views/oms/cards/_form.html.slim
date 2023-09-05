@@ -1,0 +1,9 @@
+.row
+  .col-sm-12
+    = f.input :product_id, as: 'hidden', input_html: { value: @product_id }
+    = f.input :user_id, as: 'hidden', input_html: { value: current_user.id }
+    = f.input :name
+    = f.input :code
+    = f.input :pin_code
+    = f.input :expires_at
+    

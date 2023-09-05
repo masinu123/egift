@@ -1,0 +1,23 @@
+- model_class = ::User
+- can_create = false
+
+= render 'oms/shared/crud/index', collection: @collection, can_create: can_create do
+  .table-responsive
+    table.table.table-hover.no-footer
+      thead
+        tr
+          th= model_class.human_attribute_name(:id)
+          th= model_class.human_attribute_name(:email)
+          th= model_class.human_attribute_name(:roles)
+          th= model_class.human_attribute_name(:created_at)
+          th.text-right Actions
+      tbody
+        - @collection.each do |user|
+          tr
+            td= user.id
+            td= user.email
+            td= user.role_names.join(', ')
+            td= user.created_at
+            td.text-right
+              - if can?(:update, user)
+                = link_to t('.edit', default: t('helpers.links.edit')).html_safe, edit_oms_user_path(user), class: 'btn btn-success btn-xs'

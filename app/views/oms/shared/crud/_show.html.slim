@@ -1,0 +1,50 @@
+- unless defined?(can_create)
+  - can_create = true
+
+- unless defined?(can_update)
+  - can_update = true
+
+- unless defined?(can_destroy)
+  - can_destroy = true
+
+- content_for :title do
+  = t '.title', default: t("helpers.titles.#{action_name}", model: klass.model_name.human, default: 'OMS')
+
+- if can_create && can?(:create, klass_constantize)
+  - content_for :page_buttons do
+    = link_to t('.new', default: t('helpers.links.new')).html_safe, new_resource_path, class: 'btn btn-primary', title: t('helpers.titles.new', model: klass.model_name.human)
+
+- if breadcrumbs.blank?
+  - breadcrumb "#{klass_name}".to_sym, resource
+
+br/
+.card
+  .card-block
+    = yield
+    .row
+      .col-sm-12
+        .pull-right
+          - if content_for?(:show_buttons)
+            = yield :show_buttons
+          - if content_for?(:edit)
+            = yield :edit
+          - else
+            - if can_update && can?(:update, resource)
+              '
+              = link_to t('.edit', default: t('helpers.links.edit')).html_safe, edit_resource_path(resource), class: 'btn btn-success'
+
+          - if can_destroy && can?(:destroy, resource)
+            '
+            = link_to t('.destroy', default:  t('helpers.links.destroy')).html_safe, resource_path(resource), method: :delete, data:  { confirm: t('.confirm', default:  t('helpers.links.confirm', default: 'Are you sure?')) }, class: 'btn btn-danger'
+          '
+          - if content_for?(:back)
+            = yield :back
+          - else
+            = link_to t('.back', default: t('helpers.links.back')).html_safe, collection_path, class: 'btn btn-default'
+          - if content_for?(:custom_actions)
+            '
+            = yield :custom_actions
+        .clearfix
+
+- if content_for?(:show_body)
+  = yield :show_body

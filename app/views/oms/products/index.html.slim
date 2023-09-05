@@ -1,0 +1,25 @@
+- model_class = ::Product
+
+= render 'oms/shared/crud/index', collection: @collection do
+  .table-responsive
+    table.table.table-hover.no-footer
+      thead
+        tr
+          th= klass.human_attribute_name(:name)
+          th= klass.human_attribute_name(:brand)
+          th= klass.human_attribute_name(:state)
+          th.text-right Actions
+      tbody
+        - @collection.each do |resource|
+          tr
+            td= resource.name
+            td= resource.brand_name
+            td= resource.state
+            td.text-right
+              - if can?(:manage, resource) || can?(:update, resource)
+                - if resource.active?
+                  = link_to t('.edit', default: t('helpers.links.edit')).html_safe, edit_oms_product_path(resource), class: 'btn btn-success btn-xs'
+                  '
+                  = link_to 'Request Card', new_oms_card_path(product_id: resource.id), remote: true, method: :get, class: 'btn btn-warning btn-xs'
+                  '
+                  = link_to t('.deactivate', default: 'Deactivate'), deactivate_oms_product_path(resource), class: 'btn btn-info btn-xs', data:  { confirm: t('.confirm', default:  t('helpers.links.confirm', default: 'Are you sure? This action CAN NOT REVERSE')) }

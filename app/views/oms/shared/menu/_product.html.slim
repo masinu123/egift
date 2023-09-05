@@ -1,0 +1,6 @@
+- if can?(:read, ::Product) || current_user.products.present?
+  li class="#{active_menu(controller_name: 'oms/products')}"
+    a href=oms_products_path
+      span.title #{::Product.model_name.human(count: 2)}
+    span.icon-thumbnail
+      i.fa.fa-cubes

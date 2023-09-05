@@ -1,0 +1,29 @@
+doctype html
+html lang="en"
+  head
+    = render 'oms/shared/header'
+
+  body.fixed-header.dashboard
+    = render 'oms/shared/sidebar'
+
+    .page-container
+      .header
+        a.btn-link.toggle-sidebar.hidden-lg-up.pg.pg-menu data-toggle="sidebar" href="#"
+        div
+        = render 'oms/shared/user_info'
+
+      .page-content-wrapper
+        .content
+          .container-fluid.p-t-0.p-r-15.p-l-15
+            = render 'oms/shared/breadcrumbs'
+            .clearfix
+            = render 'oms/shared/flash'
+            = yield
+
+        .container-fluid.container-fixed-lg.footer
+            = render 'oms/shared/footer'
+
+    = javascript_include_tag 'oms'
+
+    - if content_for?(:javascript_inline)
+      = yield(:javascript_inline)

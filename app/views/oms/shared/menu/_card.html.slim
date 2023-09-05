@@ -1,0 +1,6 @@
+- if can?(:read, ::Card)
+  li class="#{active_menu(controller_name: 'oms/cards')}"
+    a href=oms_cards_path
+      span.title #{::Card.model_name.human(count: 2)}
+    span.icon-thumbnail
+      i.fa.fa-cubes

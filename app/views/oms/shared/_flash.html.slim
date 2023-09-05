@@ -1,0 +1,9 @@
+- if flash[:alert].present?
+  .alert.alert-danger.fade.show role="alert"
+    button.close data-dismiss="alert"
+    = flash[:alert].to_s.html_safe
+- else
+  - if flash[:notice].present?
+    .alert.alert-success.fade.show role="alert"
+      button.close data-dismiss="alert"
+      = flash[:notice].to_s.html_safe

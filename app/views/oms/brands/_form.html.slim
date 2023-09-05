@@ -1,0 +1,34 @@
+.row
+  .col-sm-6
+    = f.input :name, disabled: true
+.row  
+  .col-sm-12
+    .card.card-default
+      .card-header.separator
+        .card-title Additional Data
+      .card-block id='metadata'
+        - f.object.meta ||= {}
+        = f.fields_for :meta, OpenStruct.new(f.object.meta) do |ff|
+          - f.object.meta.each do |k, v|
+            = ff.input k.to_sym, required: false, placeholder: 'Empty value will be remove this key', type: 'text'
+      .row style='padding: 15px;'
+        .col-sm-2
+          input.new_key_name.form-control.optional placeholder='Enter key name'
+        .col-sm-2
+          text.add_new_key.btn.btn-info Add new field
+
+
+= content_for :javascript_inline do
+  javascript:
+    $(document).ready(function() {
+      $('.add_new_key').click(function(){
+        var list = document.getElementById('metadata');
+        var key_input = document.querySelector('.new_key_name'); 
+        var key_name = key_input.value;
+
+        if (key_name) {
+          key_input.value = '';
+          list.innerHTML += '<div class="form-group string optional resource_meta_'+key_name+'"><label class="control-label string optional" for="resource_meta_'+key_name+'">'+key_name+'</label><input class="form-control string optional" placeholder="Empty value will be remove this key" type="text" name="resource[meta]['+key_name+']" id="resource_meta_'+key_name+'"></div>'
+        }
+      });
+    });

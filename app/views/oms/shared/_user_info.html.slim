@@ -1,0 +1,25 @@
+.d-flex.align-items-center
+  /! START User Info
+  .pull-left.p-r-10.fs-14.font-heading.hidden-md-down
+    span.semi-bold= current_user.email
+  .dropdown.pull-right.hidden-md-down
+    button.profile-dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+      span.thumbnail-wrapper.d32.circular.inline
+        img alt="" src="/oms/img/avatar.svg" height="32" width="32" /
+    .dropdown-menu.dropdown-menu-right.profile-dropdown role="menu"
+      / a.dropdown-item href="#"
+      /   i.pg-settings_small
+      /   | Settings
+      / a.dropdown-item href="#"
+      /   i.pg-outdent
+      /   | Feedback
+      / a.dropdown-item href="#"
+      /   i.pg-signals
+      /   | Help
+      = link_to destroy_user_session_path, method: :delete, class: 'clearfix bg-master-lighter dropdown-item' do
+        span.pull-left Logout
+        span.pull-right
+          i.pg-power
+
+  /! END User Info
+  / a.header-icon.pg.pg-alt_menu.btn-link.m-l-10.sm-no-margin.d-inline-block data-toggle="quickview" data-toggle-element="#quickview" href="#"

@@ -1,0 +1,12 @@
+/ ul.breadcrumb.p-l-0.pull-left
+/   - breadcrumbs(autoroot: false).tap do |links|
+/     - if links.any?
+/       - links.each do |link|
+/         - if link.current?
+/           li.breadcrumb-item.active= link.text.to_s.html_safe
+/         - else
+/           li.breadcrumb-item
+/             a href=link.url = link.text.to_s.html_safe
+
+.pull-right.p-t-10
+  = yield :page_buttons
